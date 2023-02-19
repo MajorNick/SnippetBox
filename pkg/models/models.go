@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-var errNoRecord error = errors.New("models: No Matching record found")
+var ErrNoRecord error = errors.New("models: No Matching record found")
 
-type Snippets struct{
+type Snippet struct{
 	ID int
 	Title string
 	Content string

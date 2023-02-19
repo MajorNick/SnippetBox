@@ -1,10 +1,12 @@
 package main
+
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
-	"html/template"
-	
+
+	"github.com/MajorNick/snippetbox/pkg/models"
 )
 func (app *application)home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -36,7 +38,16 @@ func (app *application)showSnippet(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
+	s, err := app.snippets.Get(id)
+	if err == models.ErrNoRecord {
+		app.notFound(w)
+	}else{
+		if err != nil{
+			app.serverError(w,err)
+			return
+		}
+	}
+	fmt.Fprintf(w,"%v",s)
 }
 func (app *application)createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
