@@ -18,14 +18,21 @@ func (app *application)home(w http.ResponseWriter, r *http.Request) {
 		"./ui/html/base.layout.tmpl",
 		"./ui/html/footer.partial.tmpl",
 		}
+	s, err := app.snippets.Latest()
 
+	if err!= nil{
+		app.serverError(w,err)
+	}
+
+	data := &templateData{Snippets: s}
+	
 
 	ts,err := template.ParseFiles(files...)
 	if err!= nil{
 		app.serverError(w,err)
 		http.Error(w, "Internal Server Error", 500)
 	}
-	err = ts.Execute(w,nil)
+	err = ts.Execute(w,data)
 	if err!= nil{
 		app.serverError(w,err)
 		http.Error(w, "Internal Server Error", 500)
@@ -47,7 +54,25 @@ func (app *application)showSnippet(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	fmt.Fprintf(w,"%v",s)
+	files := []string{
+		"./ui/html/show.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+		"./ui/html/footer.partial.tmpl",
+	}
+	
+	data := &templateData{Snippet: s}
+	ts, err := template.ParseFiles(files...)
+	if err != nil{
+		app.serverError(w,err)
+		return
+	}
+	err = ts.Execute(w,data)
+	if err != nil{
+		app.serverError(w,err)
+		return
+	}
+
+	
 }
 func (app *application)createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {

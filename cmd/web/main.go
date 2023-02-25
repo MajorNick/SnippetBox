@@ -48,8 +48,6 @@ func main() {
 	}
 	
 
-
-	
 	infolog.Printf("Starting server on %s\n",*addr)
 	err = srv.ListenAndServe()
 	
