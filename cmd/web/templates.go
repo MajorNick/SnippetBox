@@ -24,12 +24,7 @@ func newTemplateCache(dir string) (map[string]*template.Template,error){
 
 		return nil,err
 	}
-	//  _,err = template.ParseFiles("ui/html/home.page.tmpl")
-	
-	// if err != nil{
-	// 	log.Println("fsasfsa")
-	// 	return nil,err
-	// }
+
 	
 	for _,page := range pages{
 		name := filepath.Base(page)
