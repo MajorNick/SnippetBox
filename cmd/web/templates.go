@@ -2,9 +2,8 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"path/filepath"
-
+	
 	"github.com/MajorNick/snippetbox/pkg/models"
 )
 
@@ -18,7 +17,11 @@ func newTemplateCache(dir string) (map[string]*template.Template,error){
 	cache := make(map[string]*template.Template)
 	
 	pages,err := filepath.Glob(filepath.Join(dir,"*.page.tmpl"))
+	
+
 	if err != nil{
+		
+
 		return nil,err
 	}
 	//  _,err = template.ParseFiles("ui/html/home.page.tmpl")
@@ -30,15 +33,16 @@ func newTemplateCache(dir string) (map[string]*template.Template,error){
 	
 	for _,page := range pages{
 		name := filepath.Base(page)
-		ts,err := template.ParseFiles(name)
-		
+		ts,err := template.ParseFiles(page)
+			
 		if err != nil{
-			log.Println(name)
+			
 			return nil,err
 		}
 
 		ts, err  = ts.ParseGlob(filepath.Join(dir,"*.layout.tmpl"))
 		if err != nil{
+			
 			return nil, err
 		}
 		ts, err  = ts.ParseGlob(filepath.Join(dir,"*.partial.tmpl"))
