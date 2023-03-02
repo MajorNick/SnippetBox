@@ -13,6 +13,7 @@ import (
 )
 
 type application struct{
+	
 	errorlog *log.Logger
 	infolog *log.Logger 
 	snippets *mysql.SnippetModel
